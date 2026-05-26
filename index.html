@@ -21,67 +21,23 @@
             --yellow:    #F59E0B;
             --red:       #EF4444;
             --correct:   #10B981;
-            --wrong:     #EF4444;
-            --text:      #F1F5F9;
-            --muted:     #64748B;
-            --dim:       #94A3B8;
-            --border:    rgba(148,163,184,0.1);
-            --border2:   rgba(148,163,184,0.18);
-            --code-bg:   rgba(0,0,0,0.4);
+            --bg-main: #0B0F19; --bg-card: #111827;
+            --primary: #3B82F6; --primary-hover: #2563EB;
+            --accent: #10B981; --text: #F8FAFC; --dim: #94A3B8;
+            --border: #1E293B; --border2: #334155;
+            --wrong: #EF4444; --correct: #10B981;
         }
-        *{box-sizing:border-box;margin:0;padding:0}
-        html{scroll-behavior:smooth}
-        body{
-            font-family:'Inter',sans-serif;
-            background:var(--bg);
-            background-image:
-                linear-gradient(rgba(148,163,184,0.025) 1px,transparent 1px),
-                linear-gradient(90deg,rgba(148,163,184,0.025) 1px,transparent 1px);
-            background-size:32px 32px;
-            color:var(--text);
-            min-height:100vh;
-            overflow-x:hidden;
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Inter', sans-serif; background: var(--bg-main); color: var(--text);
+            line-height: 1.6; min-height: 100vh; overflow-x: hidden;
         }
-        /* ── Ambient blobs ─────────────────────────── */
-        .blob{position:fixed;border-radius:50%;filter:blur(110px);z-index:0;pointer-events:none;animation:float 12s ease-in-out infinite alternate}
-        .b1{top:-10%;left:-8%;width:45vw;height:45vw;background:rgba(79,142,247,0.12);animation-duration:14s}
-        .b2{bottom:-12%;right:-8%;width:50vw;height:50vw;background:rgba(6,214,160,0.1);animation-delay:-6s}
-        .b3{top:35%;left:25%;width:35vw;height:35vw;background:rgba(139,92,246,0.08);animation-duration:18s;animation-delay:-3s}
-        @keyframes float{0%{transform:translate(0,0) scale(1)}100%{transform:translate(25px,40px) scale(1.08)}}
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        
+        /* ── Header & Authentication ────────────────────────────── */
+        header { text-align: center; margin-bottom: 50px; position: relative; }
 
-        /* ── Layout ──────────────────────────────────── */
-        .wrap{max-width:1040px;margin:0 auto;padding:0 20px;position:relative;z-index:1}
-
-        /* ── Header ──────────────────────────────────── */
-        header{
-            text-align:center;padding:50px 24px 40px;
-            background:var(--bg-card);border:1px solid var(--border2);
-            border-radius:28px;margin:32px 0 36px;
-            backdrop-filter:blur(16px);
-            box-shadow:0 24px 60px rgba(0,0,0,0.3),inset 0 1px 0 rgba(255,255,255,0.06);
-            animation:slideDown .7s cubic-bezier(.16,1,.3,1);
-        }
-        @keyframes slideDown{from{opacity:0;transform:translateY(-24px)}to{opacity:1;transform:translateY(0)}}
-        .hbadge{
-            display:inline-flex;align-items:center;gap:8px;
-            background:linear-gradient(135deg,rgba(79,142,247,.15),rgba(6,214,160,.15));
-            border:1px solid rgba(6,214,160,.3);border-radius:100px;
-            padding:6px 18px;font-size:.85rem;color:var(--accent);
-            font-family:'Outfit',sans-serif;font-weight:700;letter-spacing:.5px;
-            margin-bottom:20px;
-        }
-        header h1{
-            font-family:'Outfit',sans-serif;font-size:clamp(2rem,5vw,3.2rem);
-            font-weight:800;letter-spacing:-1px;
-            background:linear-gradient(135deg,#fff 0%,var(--accent) 60%,var(--primary) 100%);
-            -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-            margin-bottom:14px;
-        }
-        header p{color:var(--dim);font-size:1.1rem;max-width:560px;margin:0 auto 24px}
-        .hstats{display:flex;justify-content:center;gap:32px;flex-wrap:wrap}
-        .hstat{text-align:center}
-        .hstat-num{font-family:'Outfit',sans-serif;font-size:1.8rem;font-weight:800;background:linear-gradient(135deg,var(--primary),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
-        .hstat-lbl{font-size:.8rem;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-top:2px}
+        h1 { font-family: 'Outfit', sans-serif; font-size: 3rem; margin-bottom: 15px; letter-spacing: -1px; }
 
         /* ── Tabs ─────────────────────────────────────── */
         .tabs{
@@ -92,15 +48,15 @@
         }
         .tab{
             padding:13px 28px;font-family:'Outfit',sans-serif;
-            font-size:1rem;font-weight:700;color:var(--muted);
+            font-size:1rem;font-weight:700;color:var(--dim);
             background:transparent;border:none;border-radius:100px;
             cursor:pointer;transition:all .3s ease;display:flex;align-items:center;gap:8px;
         }
         .tab:hover{color:var(--text);background:rgba(255,255,255,0.05)}
         .tab.active{
             color:#fff;
-            background:linear-gradient(135deg,var(--primary),var(--accent));
-            box-shadow:0 8px 24px rgba(79,142,247,.35);
+            background:var(--primary);
+            box-shadow:0 8px 24px rgba(59,130,246,.35);
         }
         .panel{display:none;animation:fadeUp .4s ease-out}
         .panel.active{display:block}
@@ -114,20 +70,18 @@
         /* ━━━━━━━━━━━━━━━━ CONCEPT TAB ━━━━━━━━━━━━━━━━ */
         .topic-nav{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:32px}
         .topic-pill{
-            padding:9px 20px;border-radius:100px;border:1.5px solid var(--border2);
+            padding:9px 20px;border-radius:100px;border:1px solid var(--border2);
             background:var(--bg-card);color:var(--dim);cursor:pointer;
             font-family:'Outfit',sans-serif;font-weight:700;font-size:.92rem;
             transition:all .25s ease;display:flex;align-items:center;gap:7px;
         }
         .topic-pill:hover{border-color:var(--primary);color:var(--text)}
-        .topic-pill.active{border-color:transparent;color:#fff;box-shadow:0 6px 20px rgba(0,0,0,.3)}
+        .topic-pill.active{border-color:transparent;color:#fff;background:var(--primary)!important;box-shadow:0 6px 20px rgba(59,130,246,.3)}
 
         .concept-card{
             background:var(--bg-card);border:1px solid var(--border2);border-radius:22px;
             padding:32px;backdrop-filter:blur(12px);margin-bottom:24px;
-            transition:transform .3s ease,box-shadow .3s ease;
         }
-        .concept-card:hover{transform:translateY(-4px);box-shadow:0 20px 50px rgba(0,0,0,.3)}
         .concept-summary{
             font-size:1.05rem;color:var(--dim);margin-bottom:28px;
             padding:16px 20px;background:rgba(255,255,255,.03);
@@ -144,7 +98,7 @@
         }
         .mini-term::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0}
         pre{
-            background:var(--code-bg);border:1px solid var(--border);border-radius:10px;
+            background:rgba(0,0,0,0.4);border:1px solid var(--border);border-radius:10px;
             padding:16px;overflow-x:auto;margin:10px 0;
             font-family:'Fira Code',monospace;font-size:.88rem;line-height:1.6;color:#E2E8F0;
         }
@@ -153,13 +107,12 @@
             padding:10px 14px;background:rgba(6,214,160,.05);
             border-radius:8px;border:1px solid rgba(6,214,160,.1);
         }
-        .mini-explain::before{content:'💡 ';font-size:1rem}
 
         /* ━━━━━━━━━━━━━━━━ QUIZ TAB ━━━━━━━━━━━━━━━━━━━ */
         .quiz-controls{
             display:flex;flex-wrap:wrap;gap:16px;align-items:center;
             background:var(--bg-card);border:1px solid var(--border2);border-radius:18px;
-            padding:20px 24px;margin-bottom:28px;backdrop-filter:blur(12px);
+            padding:20px 24px;margin-bottom:28px;
         }
         .ctrl-group{display:flex;align-items:center;gap:10px;flex:1;min-width:200px}
         .ctrl-label{font-size:.85rem;color:var(--dim);font-weight:600;white-space:nowrap}
@@ -167,208 +120,34 @@
             background:rgba(0,0,0,.4);border:1px solid var(--border2);
             border-radius:10px;color:var(--text);padding:9px 14px;
             font-family:'Inter',sans-serif;font-size:.9rem;cursor:pointer;
-            flex:1;outline:none;transition:border-color .2s;
+            flex:1;outline:none;
         }
-        select:focus{border-color:var(--primary)}
 
         .qcard{
             background:var(--bg-card);border:1px solid var(--border2);border-radius:18px;
-            padding:28px;margin-bottom:20px;backdrop-filter:blur(10px);
-            transition:border-color .3s;
+            padding:28px;margin-bottom:20px;
         }
-        .qcard:focus-within{border-color:rgba(79,142,247,.5);box-shadow:0 0 0 2px rgba(79,142,247,.08)}
         .qnum{
-            font-family:'Fira Code',monospace;font-size:.8rem;color:var(--muted);
-            font-weight:500;margin-bottom:14px;display:flex;align-items:center;gap:8px;
+            font-family:'Fira Code',monospace;font-size:.8rem;color:var(--dim);
+            margin-bottom:14px;display:flex;align-items:center;gap:8px;
         }
-        .qdiff{
-            font-size:.72rem;padding:3px 10px;border-radius:100px;font-weight:700;
-            font-family:'Outfit',sans-serif;
-        }
-        .qdiff.easy{background:rgba(16,185,129,.15);color:#34D399}
-        .qdiff.medium{background:rgba(245,158,11,.15);color:#FCD34D}
-        .qdiff.hard{background:rgba(239,68,68,.15);color:#FCA5A5}
-
         .qtext{
             font-family:'Outfit',sans-serif;font-size:1.15rem;font-weight:700;
             color:#fff;margin-bottom:16px;line-height:1.5;
         }
-        .qcode{margin-bottom:18px}
-
-        .opts{display:flex;flex-direction:column;gap:10px}
         .opt{
             display:flex;align-items:flex-start;gap:14px;padding:14px 18px;
             background:rgba(0,0,0,.25);border:1.5px solid var(--border);
-            border-radius:12px;cursor:pointer;transition:all .2s ease;color:var(--dim);
-            font-size:.95rem;line-height:1.5;
+            border-radius:12px;cursor:pointer;margin-bottom:10px;
+            transition:all .2s ease;
         }
-        .opt:hover{background:rgba(30,41,59,.6);border-color:rgba(79,142,247,.4);color:var(--text)}
-        .opt input[type=radio]{display:none}
-        .opt-dot{
-            width:20px;height:20px;border-radius:50%;border:2px solid var(--muted);
-            flex-shrink:0;margin-top:2px;transition:all .2s;position:relative;
-        }
-        .opt:has(input:checked) .opt-dot{border-color:var(--accent)}
-        .opt:has(input:checked) .opt-dot::after{
-            content:'';position:absolute;top:50%;left:50%;
-            transform:translate(-50%,-50%);
-            width:9px;height:9px;border-radius:50%;background:var(--accent);
-        }
-        .opt:has(input:checked){background:rgba(6,214,160,.06);border-color:var(--accent);color:var(--text)}
-
-        /* Graded states */
-        .opt.correct-opt{background:rgba(16,185,129,.12)!important;border-color:var(--correct)!important;color:#A7F3D0!important}
-        .opt.correct-opt .opt-dot{border-color:var(--correct)!important;background:rgba(16,185,129,.2)!important}
-        .opt.correct-opt .opt-dot::after{background:var(--correct)!important}
-        .opt.wrong-opt{background:rgba(239,68,68,.1)!important;border-color:var(--wrong)!important;color:#FECACA!important}
-        .opt.wrong-opt .opt-dot{border-color:var(--wrong)!important}
-
-        .explain-box{
-            display:none;margin-top:14px;padding:14px 18px;
-            background:rgba(79,142,247,.07);border:1px solid rgba(79,142,247,.2);
-            border-radius:10px;font-size:.87rem;color:var(--dim);line-height:1.6;
-        }
-        .explain-box.show{display:block}
-        .explain-box strong{color:var(--primary)}
-
-        /* Quiz actions */
-        .quiz-actions{display:flex;justify-content:center;gap:16px;margin-top:32px;flex-wrap:wrap}
-        .btn{
-            padding:15px 36px;font-family:'Outfit',sans-serif;font-size:1rem;
-            font-weight:700;border:none;border-radius:100px;cursor:pointer;
-            transition:all .3s ease;display:inline-flex;align-items:center;gap:9px;
-        }
-        .btn-primary{
-            background:linear-gradient(135deg,var(--primary),var(--accent));
-            color:#fff;box-shadow:0 8px 24px rgba(79,142,247,.35);
-        }
-        .btn-primary:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(6,214,160,.35)}
-        .btn-ghost{background:transparent;color:var(--text);border:1.5px solid var(--border2)}
-        .btn-ghost:hover{background:rgba(255,255,255,.05);border-color:var(--dim)}
-
-        /* Score result */
-        .result-box{
-            display:none;background:var(--bg-card);border:1px solid var(--border2);
-            border-radius:24px;padding:40px;text-align:center;margin-bottom:32px;
-            backdrop-filter:blur(12px);animation:bounceIn .6s cubic-bezier(.175,.885,.32,1.275);
-        }
-        .result-box.show{display:block}
-        @keyframes bounceIn{0%{transform:scale(.88);opacity:0}100%{transform:scale(1);opacity:1}}
-        .result-box h2{font-family:'Outfit',sans-serif;font-size:1.6rem;font-weight:800;margin-bottom:20px}
-        .score-ring{
-            width:130px;height:130px;border-radius:50%;margin:0 auto 20px;
-            background:conic-gradient(var(--correct) var(--pct,0%),rgba(255,255,255,.08) 0);
-            display:flex;align-items:center;justify-content:center;position:relative;
-        }
-        .score-ring::after{
-            content:'';position:absolute;width:108px;height:108px;
-            border-radius:50%;background:var(--bg-card);
-        }
-        .score-num{
-            position:relative;z-index:2;
-            font-family:'Outfit',sans-serif;font-size:2rem;font-weight:800;color:#fff;
-        }
-        .score-msg{color:var(--dim);font-size:1rem;margin-bottom:24px}
-
-        /* Progress bar */
-        .qprogress{height:4px;background:rgba(255,255,255,.06);border-radius:100px;margin-bottom:24px;overflow:hidden}
-        .qprogress-fill{height:100%;border-radius:100px;background:linear-gradient(90deg,var(--primary),var(--accent));transition:width .4s ease}
-
-        /* ━━━━━━━━━━━━━━━━ FLASHCARD TAB ━━━━━━━━━━━━━━ */
-        .flashwrap{max-width:640px;margin:0 auto}
-        .fcard-container{perspective:1000px;height:360px;margin-bottom:28px;cursor:pointer}
-        .fcard{
-            width:100%;height:100%;position:relative;
-            transform-style:preserve-3d;transition:transform .6s cubic-bezier(.4,0,.2,1);
-        }
-        .fcard.flipped{transform:rotateY(180deg)}
-        .fcard-face{
-            position:absolute;width:100%;height:100%;backface-visibility:hidden;
-            border-radius:24px;display:flex;flex-direction:column;
-            align-items:center;justify-content:center;padding:36px;
-            border:1px solid var(--border2);backdrop-filter:blur(12px);text-align:center;
-        }
-        .fcard-front{background:var(--bg-card)}
-        .fcard-back{
-            background:linear-gradient(135deg,rgba(79,142,247,.12),rgba(6,214,160,.08));
-            transform:rotateY(180deg);
-        }
-        .fcard-hint{font-size:.8rem;color:var(--muted);margin-bottom:24px;text-transform:uppercase;letter-spacing:1px}
-        .fcard-term{font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:16px}
-        .fcard-code{
-            font-family:'Fira Code',monospace;font-size:.82rem;
-            background:var(--code-bg);border:1px solid var(--border);
-            border-radius:10px;padding:14px;text-align:left;width:100%;
-            max-height:140px;overflow-y:auto;color:#94D5F5;
-        }
-        .fcard-explain{font-size:.95rem;color:var(--dim);line-height:1.7}
-        .fcard-explain strong{color:var(--accent)}
-
-        .flash-nav{display:flex;align-items:center;justify-content:center;gap:20px}
-        .flash-count{font-family:'Outfit',sans-serif;font-weight:700;color:var(--dim);min-width:70px;text-align:center}
-        .btn-icon{
-            width:48px;height:48px;border-radius:50%;border:1.5px solid var(--border2);
-            background:var(--bg-card);color:var(--text);cursor:pointer;
-            font-size:1.2rem;transition:all .25s;display:flex;align-items:center;justify-content:center;
-        }
-        .btn-icon:hover{background:var(--primary);border-color:var(--primary);transform:scale(1.08)}
-        .flash-progress{
-            display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-bottom:20px;max-width:500px;margin-inline:auto;
-        }
-        .fp-dot{width:10px;height:10px;border-radius:50%;background:var(--border2);transition:background .3s;cursor:pointer}
-        .fp-dot.seen{background:var(--primary)}
-        .fp-dot.current{background:var(--accent);box-shadow:0 0 8px var(--accent)}
-
-        /* ── Footer ────────────────────────────────────── */
-        footer{text-align:center;color:var(--muted);font-size:.88rem;padding:40px 20px 50px;border-top:1px solid var(--border);margin-top:60px}
-        footer a{color:var(--primary);text-decoration:none}
-        footer a:hover{text-decoration:underline}
-
-        /* ── Scrollbar ─────────────────────────────────── */
-        ::-webkit-scrollbar{width:6px;height:6px}
-        ::-webkit-scrollbar-track{background:transparent}
-        ::-webkit-scrollbar-thumb{background:rgba(148,163,184,.2);border-radius:100px}
-        ::-webkit-scrollbar-thumb:hover{background:rgba(148,163,184,.4)}
-
-        /* ── Search ────────────────────────────────────── */
-        .search-fab {
-            position: fixed; right: 28px; bottom: 28px; z-index: 99;
-            width: 60px; height: 60px; border-radius: 50%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            color: #fff; font-size: 1.6rem; border: none;
-            box-shadow: 0 10px 25px rgba(6, 214, 160, 0.4); cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            transition: all 0.3s;
-        }
-        .search-fab:hover { transform: scale(1.1); }
-        .search-modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(8px); z-index: 100;
-            align-items: flex-start; justify-content: center; padding-top: 10vh;
-        }
-        .search-modal.active { display: flex; }
-        .search-box {
-            background: var(--bg-card); width: 90%; max-width: 650px;
-            border-radius: 20px; border: 1px solid var(--border2);
-            overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-        }
-        .search-box input {
-            width: 100%; padding: 20px 24px; font-size: 1.1rem;
-            background: transparent; border: none; color: var(--text);
-            border-bottom: 1px solid var(--border); outline: none;
-        }
-        .search-results { max-height: 60vh; overflow-y: auto; padding: 10px; }
-        .search-item {
-            padding: 14px 18px; cursor: pointer; border-radius: 12px; margin-bottom: 4px;
-            transition: background 0.2s;
-        }
-        .search-item:hover { background: rgba(255,255,255,0.05); }
-        .search-title { font-weight: bold; color: var(--accent); margin-bottom: 6px; }
-        .search-snippet { font-size: 0.85rem; color: var(--dim); }
+        .opt:hover{background:rgba(30,41,59,.6)}
+        .opt.correct { border-color: var(--correct); background: rgba(16,185,129,.1); }
+        .opt.wrong { border-color: var(--wrong); background: rgba(239,68,68,.1); }
 
         /* ── Community Contribution ────────────────────────────── */
         #community-btn {
-            position: fixed; left: 24px; bottom: 84px; z-index: 98; /* Ở trên nút Admin nếu có */
+            position: fixed; left: 24px; bottom: 84px; z-index: 98;
             padding: 12px 20px; border-radius: 100px;
             background: rgba(255,255,255,0.1); border: 1px solid var(--border);
             color: var(--text); font-weight: 600; font-family: 'Outfit', sans-serif;
@@ -382,25 +161,31 @@
         }
         .community-modal.active { display: flex; }
         .community-box {
-            background: var(--bg-card); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
+            background: var(--bg-main); width: 100%; max-width: 600px;
             border-radius: 24px; border: 1px solid var(--border2); padding: 40px;
-            text-align: left; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
         }
-        .community-box h3 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 12px; text-align: center; }
-        .community-box p.subtitle { color: var(--dim); font-size: 0.95rem; margin-bottom: 24px; text-align: center; }
-        .community-box label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--accent); }
         .community-box input {
             width: 100%; padding: 14px 18px; font-size: 1rem;
             background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff;
-            border-radius: 12px; margin-bottom: 20px; outline: none; transition: border-color 0.2s;
+            border-radius: 12px; margin-bottom: 15px; outline: none; transition: border-color 0.2s;
         }
         .community-box input:focus { border-color: var(--primary); }
-        .community-box textarea {
-            width: 100%; padding: 14px; background: rgba(0,0,0,0.5); border: 1px dashed var(--accent);
-            color: var(--correct); font-family: monospace; font-size: 0.9rem; border-radius: 12px;
-            height: 120px; resize: none; margin-top: 10px; margin-bottom: 20px; display: none;
+        .btn-guide {
+            background: rgba(16, 185, 129, 0.15); color: var(--correct); border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 6px 12px; border-radius: 8px; font-size: 0.8rem; cursor: pointer; float: right; margin-top: -30px; margin-bottom: 15px;
+            transition: all 0.2s;
         }
+        .btn-guide:hover { background: rgba(16, 185, 129, 0.3); }
         .c-loading { display: none; text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 20px; }
+
+        /* Guide Modal */
+        .guide-box {
+            background: var(--bg-main); width: 100%; max-width: 500px; border-radius: 20px;
+            border: 1px solid var(--border2); padding: 30px; box-shadow: 0 10px 40px rgba(0,0,0,0.8);
+        }
+        .guide-step { background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border); }
+        .guide-step h4 { color: #F59E0B; margin-bottom: 8px; }
 
         @media(max-width:600px){
             .tabs{flex-direction:column;border-radius:16px}
@@ -411,185 +196,26 @@
     </style>
 </head>
 <body>
-<div class="blob b1"></div>
-<div class="blob b2"></div>
-<div class="blob b3"></div>
 
-<div class="wrap">
-    <!-- HEADER -->
+<div class="container">
     <header>
-        <div class="hbadge">⚡ MIO JavaScript Learning</div>
-        <h1>Chinh Phục JavaScript</h1>
-        <p>Học JavaScript từ cơ bản đến nâng cao. Scope, Closure, this, Async — từ "hiểu" đến "không bao giờ bị bẫy".</p>
-        <div class="hstats">
-            <div class="hstat">
-                <div class="hstat-num" id="stat-concepts">6</div>
-                <div class="hstat-lbl">Chủ Đề</div>
-            </div>
-            <div class="hstat">
-                <div class="hstat-num" id="stat-quiz">40</div>
-                <div class="hstat-lbl">Câu Quiz</div>
-            </div>
-            <div class="hstat">
-                <div class="hstat-num" id="stat-flash">—</div>
-                <div class="hstat-lbl">Flashcard</div>
-            </div>
-        </div>
+        <h1><span style="color:var(--primary)">MIO</span> Javascript Learning</h1>
     </header>
 
     <!-- TABS -->
     <div class="tabs" role="tablist">
         <button class="tab active" onclick="switchTab('concept')" id="tab-concept" role="tab">📚 Lý Thuyết</button>
         <button class="tab" onclick="switchTab('quiz')" id="tab-quiz" role="tab">🎯 Quiz</button>
-        <button class="tab" onclick="switchTab('flash')" id="tab-flash" role="tab">🃏 Flashcard</button>
-        <button class="tab" onclick="switchTab('review')" id="tab-review" role="tab">🔁 Ôn Lại</button>
     </div>
 
     <!-- ══════════════ CONCEPT PANEL ══════════════ -->
     <div class="panel active" id="panel-concept">
-        <div class="sec-head">
-            <h2>📚 Lý Thuyết Cốt Lõi</h2>
-            <p>Hiểu bản chất cốt lõi của JavaScript, không bao giờ bị bẫy khi phỏng vấn.</p>
-        </div>
-        <div class="topic-nav" id="topic-nav"></div>
         <div id="concept-content"></div>
     </div>
 
     <!-- ══════════════ QUIZ PANEL ══════════════════ -->
     <div class="panel" id="panel-quiz">
-        <div class="sec-head">
-            <h2>🎯 Quiz JavaScript</h2>
-            <p>Tuyển tập câu hỏi mẹo cực hay về JavaScript. Chọn topic và độ khó, rồi thử xem điểm bao nhiêu!</p>
-        </div>
-
-        <!-- Result box (top) -->
-        <div class="result-box" id="result-box">
-            <h2 id="result-title">🎉 Kết Quả</h2>
-            <div class="score-ring" id="score-ring">
-                <span class="score-num" id="score-num">0%</span>
-            </div>
-            <div class="score-msg" id="score-msg"></div>
-            <div class="quiz-actions">
-                <button class="btn btn-ghost" onclick="retryQuiz()">🔄 Làm Lại</button>
-                <button class="btn btn-primary" onclick="switchTab('flash')">🃏 Học Flashcard</button>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="quiz-controls">
-            <div class="ctrl-group">
-                <span class="ctrl-label">Chủ đề:</span>
-                <select id="filter-topic" onchange="buildQuiz()">
-                    <option value="all">Tất cả</option>
-                    <option value="scope">Scope & Hoisting</option>
-                    <option value="closure">Closure</option>
-                    <option value="this">this Keyword</option>
-                    <option value="prototype">Prototype & Class</option>
-                    <option value="async">Async & Event Loop</option>
-                    <option value="types">Types & Coercion</option>
-                </select>
-            </div>
-            <div class="ctrl-group">
-                <span class="ctrl-label">Độ khó:</span>
-                <select id="filter-diff" onchange="buildQuiz()">
-                    <option value="all">Tất cả</option>
-                    <option value="easy">Dễ</option>
-                    <option value="medium">Trung bình</option>
-                    <option value="hard">Khó</option>
-                </select>
-            </div>
-            <div class="ctrl-group">
-                <span class="ctrl-label">Số câu:</span>
-                <select id="filter-count" onchange="buildQuiz()">
-                    <option value="10">10 câu</option>
-                    <option value="20" selected>20 câu</option>
-                    <option value="40">40 câu</option>
-                </select>
-            </div>
-        </div>
-
-        <div class="qprogress"><div class="qprogress-fill" id="q-progress" style="width:0%"></div></div>
-
         <div id="quiz-form"></div>
-        <div class="quiz-actions" id="quiz-actions">
-            <button class="btn btn-ghost" onclick="buildQuiz()">🔀 Đổi Bộ Câu</button>
-            <button class="btn btn-primary" onclick="submitQuiz()">✅ Nộp Bài</button>
-        </div>
-    </div>
-
-    <!-- ══════════════ FLASHCARD PANEL ════════════ -->
-    <div class="panel" id="panel-flash">
-        <div class="sec-head">
-            <h2>🃏 Flashcard</h2>
-            <p>Click vào thẻ để lật xem giải thích. Luyện nhớ từng concept một cách chủ động.</p>
-        </div>
-        <div class="flashwrap">
-            <div class="flash-progress" id="flash-progress"></div>
-            <div class="fcard-container" onclick="flipCard()" title="Click để lật thẻ">
-                <div class="fcard" id="fcard">
-                    <div class="fcard-face fcard-front">
-                        <div class="fcard-hint">🖱 Click để lật</div>
-                        <div class="fcard-term" id="fc-term">Loading...</div>
-                        <div class="qcode" id="fc-code-wrap" style="width:100%">
-                            <pre id="fc-code"></pre>
-                        </div>
-                    </div>
-                    <div class="fcard-face fcard-back">
-                        <div class="fcard-hint">✨ Giải thích</div>
-                        <div class="fcard-explain" id="fc-explain"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="flash-nav">
-                <button class="btn-icon" onclick="prevCard()">◀</button>
-                <span class="flash-count" id="flash-count">1 / 1</span>
-                <button class="btn-icon" onclick="nextCard()">▶</button>
-            </div>
-            <div class="quiz-actions" style="margin-top:20px">
-                <button class="btn btn-ghost" onclick="shuffleCards()">🔀 Xáo Thẻ</button>
-                <button class="btn btn-primary" onclick="switchTab('quiz')">🎯 Làm Quiz</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ══════════════ REVIEW PANEL ════════════════ -->
-    <div class="panel" id="panel-review">
-        <div class="sec-head">
-            <h2>🔁 Ôn Lại (Spaced Repetition)</h2>
-            <p>Những câu Quiz bạn làm sai sẽ xuất hiện ở đây. Trả lời ĐÚNG 5 lần liên tiếp (Streak = 5) để xóa khỏi danh sách!</p>
-        </div>
-        <div id="review-stats" style="margin-bottom:20px; font-weight:bold; color:var(--accent);"></div>
-        <div id="review-form"></div>
-        <div class="quiz-actions" id="review-actions">
-            <button class="btn btn-primary" onclick="submitReview()">✅ Nộp Bài Ôn Lại</button>
-        </div>
-    </div>
-
-    <footer>
-        <p><strong>© MIO G-SS CO.,LTD</strong></p>
-        <p style="margin-top:8px">MIO JavaScript Learning App &nbsp;·&nbsp; <span id="year"></span></p>
-    </footer>
-</div>
-
-<!-- SEARCH MODAL & FAB -->
-<button class="search-fab" onclick="openSearch()">🔍</button>
-<div class="search-modal" id="search-modal" onclick="closeSearch(event)">
-    <div class="search-box">
-        <input type="text" id="search-input" placeholder="Tìm kiếm khái niệm, câu hỏi (VD: closure, event loop)..." onkeyup="doSearch()">
-        <div class="search-results" id="search-results"></div>
-    </div>
-</div>
-
-<!-- ADMIN INGESTION UI -->
-<button id="admin-btn" onclick="openAdmin()">⚡ Nạp Kiến Thức (Admin)</button>
-<div class="admin-modal" id="admin-modal" onclick="closeAdmin(event)">
-    <div class="admin-box">
-        <h3>🤖 Bộ Máy Nhập Liệu</h3>
-        <p>Nhập tên hàm/khái niệm JS mới. Hệ thống sẽ dùng API để tự động sinh Lý thuyết & Quiz, và ghi thẳng vào web!</p>
-        <input type="text" id="admin-input" placeholder="VD: Array.prototype.reduce, Promise.all...">
-        <div class="loading-ring" id="admin-loading"></div>
-        <div id="admin-msg" style="color: var(--accent); margin-bottom: 20px; font-weight: bold;"></div>
-        <button class="btn btn-primary" style="width:100%; justify-content:center; background:linear-gradient(135deg, #F59E0B, #EF4444); box-shadow: 0 8px 24px rgba(239, 68, 68, 0.3)" id="admin-submit-btn" onclick="submitAdmin()">🚀 Tiến Hành Nạp</button>
     </div>
 </div>
 
@@ -598,164 +224,37 @@
 <div class="community-modal" id="community-modal" onclick="closeCommunity(event)">
     <div class="community-box">
         <h3>🤝 Trạm Đóng Góp Cộng Đồng</h3>
-        <p class="subtitle">Sử dụng API Key của riêng bạn để sinh dữ liệu. Dữ liệu sẽ lưu tạm vào máy của bạn. Hãy gửi mã JSON cho Admin để cập nhật chung nhé!</p>
+        <p style="text-align:center; color:var(--dim); margin-bottom: 20px;">Dùng Gemini API để sinh dữ liệu mới.</p>
         
-        <label>1. Gemini API Key (Bản Free của bạn):</label>
+        <label>Gemini API Key:</label>
+        <button class="btn-guide" onclick="document.getElementById('guide-modal').classList.add('active')">❓ Cách lấy</button>
         <input type="password" id="comm-apikey" placeholder="AIzaSy...">
         
-        <label>2. Tên Hàm/Khái niệm JS muốn đóng góp:</label>
-        <input type="text" id="comm-keyword" placeholder="VD: WeakMap, Object.freeze...">
+        <label>Khái niệm JS:</label>
+        <input type="text" id="comm-keyword" placeholder="VD: WeakMap...">
         
-        <div class="c-loading" id="comm-loading">⏳ Đang xử lý tự động... (Vui lòng đợi 20s)</div>
-        <div id="comm-msg" style="text-align:center; font-weight:bold; margin-bottom: 15px;"></div>
-        
-        <div style="display:flex; gap:10px;">
-            <button class="btn btn-primary" style="flex:1; justify-content:center;" id="comm-submit-btn" onclick="submitCommunity()">🚀 Đóng Góp Cho Cộng Đồng</button>
-            <button class="btn btn-secondary" style="justify-content:center;" onclick="document.getElementById('community-modal').classList.remove('active')">Đóng</button>
-        </div>
+        <div class="c-loading" id="comm-loading">⏳ Đang xử lý...</div>
+        <button class="btn-primary" style="width:100%; padding:14px; border-radius:12px; border:none; background:var(--primary); color:white; cursor:pointer;" onclick="submitCommunity()">🚀 Nạp Kiến Thức</button>
     </div>
 </div>
 
-<!-- Load data -->
-<script src="js_data.js"></script>
-<script src="js_community.js"></script>
+<!-- API KEY GUIDE MODAL -->
+<div class="community-modal" id="guide-modal" onclick="if(event.target.id === 'guide-modal') this.classList.remove('active')" style="z-index: 250;">
+    <div class="guide-box">
+        <h3 style="text-align:center; color:var(--primary); margin-bottom: 20px;">🔑 Lấy API Key Miễn Phí</h3>
+        <div class="guide-step">
+            <h4>Bước 1:</h4>
+            <p><a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#3B82F6;">👉 Google AI Studio</a></p>
+        </div>
+        <div class="guide-step">
+            <h4>Bước 2:</h4>
+            <p>Bấm <strong>"Create API Key"</strong> và Copy mã.</p>
+        </div>
+        <button class="btn-primary" style="width:100%; padding:10px; border-radius:10px; border:none; background:var(--accent); color:white; cursor:pointer;" onclick="document.getElementById('guide-modal').classList.remove('active')">Đã Hiểu</button>
+    </div>
+</div>
 
 <script>
-// ── Utility ───────────────────────────────────────────────
-document.getElementById('year').textContent = new Date().getFullYear();
-function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
-function esc(str) {
-    if (!str) return '';
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-}
-
-// ── Tab switching ─────────────────────────────────────────
-function switchTab(name) {
-    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.getElementById('panel-' + name).classList.add('active');
-    document.getElementById('tab-' + name).classList.add('active');
-    window.scrollTo({top: 0, behavior: 'smooth'});
-    if(name === 'review') buildReviewQuiz();
-}
-
-// ━━━━━━━━━━━━━━━━━━━━ CONCEPT ━━━━━━━━━━━━━━━━━━━━━━━━━━
-let activeTopic = 0;
-
-function renderConcepts() {
-    // Stats
-    let totalConcepts = 0;
-    CONCEPT_DATA.forEach(t => totalConcepts += (t.concepts || []).length);
-    document.getElementById('stat-flash').textContent = totalConcepts;
-
-    // Topic pills
-    const nav = document.getElementById('topic-nav');
-    CONCEPT_DATA.forEach((t, i) => {
-        const pill = document.createElement('button');
-        pill.className = 'topic-pill' + (i === 0 ? ' active' : '');
-        pill.style.setProperty('--tc', t.color);
-        pill.innerHTML = t.icon + ' ' + t.title;
-        pill.onclick = () => showTopic(i);
-        if (i === 0) pill.style.background = `linear-gradient(135deg,${t.color}33,${t.color}11)`;
-        if (i === 0) pill.style.borderColor = t.color + '60';
-        if (i === 0) pill.style.color = t.color;
-        nav.appendChild(pill);
-    });
-    showTopic(0);
-}
-
-function showTopic(idx) {
-    activeTopic = idx;
-    const t = CONCEPT_DATA[idx];
-    // Update pills
-    document.querySelectorAll('.topic-pill').forEach((p, i) => {
-        p.classList.toggle('active', i === idx);
-        if (i === idx) {
-            p.style.background = `linear-gradient(135deg,${CONCEPT_DATA[i].color}33,${CONCEPT_DATA[i].color}11)`;
-            p.style.borderColor = CONCEPT_DATA[i].color + '70';
-            p.style.color = CONCEPT_DATA[i].color;
-        } else {
-            p.style.background = '';
-            p.style.borderColor = '';
-            p.style.color = '';
-        }
-    });
-    // Render concept card
-    const cc = document.getElementById('concept-content');
-    cc.innerHTML = `
-        <div class="concept-card" style="border-color:${t.color}30">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">
-                <span style="font-size:2.4rem">${t.icon}</span>
-                <div>
-                    <h3 style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff">${t.title}</h3>
-                </div>
-            </div>
-            <div class="concept-summary">${t.summary}</div>
-            ${(t.concepts || []).map(c => `
-                <div class="mini-card">
-                    <div class="mini-term">${esc(c.term)}</div>
-                    ${c.code ? `<pre><code>${esc(c.code)}</code></pre>` : ''}
-                    <div class="mini-explain">${c.explain}</div>
-                </div>
-            `).join('')}
-        </div>`;
-}
-
-// ━━━━━━━━━━━━━━━━━━━━ QUIZ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-let currentQuestions = [];
-let quizSubmitted = false;
-
-function buildQuiz() {
-    quizSubmitted = false;
-    document.getElementById('result-box').classList.remove('show');
-    document.getElementById('quiz-actions').style.display = 'flex';
-
-    const topic = document.getElementById('filter-topic').value;
-    const diff  = document.getElementById('filter-diff').value;
-    const count = parseInt(document.getElementById('filter-count').value);
-
-    let pool = [...QUIZ_DATA];
-    if (topic !== 'all') pool = pool.filter(q => q.topic === topic);
-    if (diff  !== 'all') pool = pool.filter(q => q.difficulty === diff);
-    pool = shuffle(pool).slice(0, count);
-    currentQuestions = pool;
-
-    // Progress
-    document.getElementById('q-progress').style.width = '0%';
-
-    const form = document.getElementById('quiz-form');
-    form.innerHTML = pool.map((q, i) => `
-        <div class="qcard" id="qcard-${i}" data-qi="${i}">
-            <div class="qnum">
-                <span>Câu ${i + 1} / ${pool.length}</span>
-                <span class="qdiff ${q.difficulty}">${q.difficulty === 'easy' ? 'Dễ' : q.difficulty === 'medium' ? 'Trung bình' : 'Khó'}</span>
-                <span style="color:var(--muted);margin-left:auto">${topicLabel(q.topic)}</span>
-            </div>
-            <div class="qtext">${esc(q.question)}</div>
-            ${q.code ? `<div class="qcode"><pre><code>${esc(q.code)}</code></pre></div>` : ''}
-            <div class="opts" id="opts-${i}">
-                ${q.options.map((opt, oi) => `
-                    <label class="opt" id="opt-${i}-${oi}">
-                        <input type="radio" name="q${i}" value="${oi}" onchange="updateProgress()">
-                        <span class="opt-dot"></span>
-                        <span>${esc(opt)}</span>
-                    </label>
-                `).join('')}
-            </div>
-            <div class="explain-box" id="explain-${i}">
-                <strong>💡 Giải thích:</strong> ${q.explanation}
-            </div>
-        </div>
-    `).join('');
-}
-
 function topicLabel(t) {
     const m = {scope:'Scope',closure:'Closure',this:'this',prototype:'Prototype',async:'Async',types:'Types'};
     return m[t] || t;
@@ -1119,6 +618,9 @@ async function submitCommunity() {
     const keyword = document.getElementById('comm-keyword').value.trim();
     if(!apiKey || !keyword) return alert("Vui lòng nhập đủ API Key và Tên Hàm!");
     
+    // Ghi nhớ API Key vào LocalStorage
+    localStorage.setItem('mio_api_key', apiKey);
+    
     const btn = document.getElementById('comm-submit-btn');
     const loading = document.getElementById('comm-loading');
     const msg = document.getElementById('comm-msg');
@@ -1208,6 +710,10 @@ function init() {
         document.body.innerHTML = '<div style="text-align:center;padding:100px;font-family:Inter,sans-serif;color:#94A3B8"><h2 style="color:#EF4444">⚠️ Thiếu file js_data.js</h2><p style="margin-top:12px">Hãy đảm bảo file <code>js_data.js</code> nằm cùng thư mục với <code>index.html</code></p></div>';
         return;
     }
+    
+    // Auto fill API Key if exists
+    const savedKey = localStorage.getItem('mio_api_key');
+    if(savedKey) document.getElementById('comm-apikey').value = savedKey;
     
     // Merge Community Data from js_community.js
     if (typeof COMMUNITY_CONCEPTS !== 'undefined' && typeof COMMUNITY_QUIZZES !== 'undefined') {
