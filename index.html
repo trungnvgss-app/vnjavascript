@@ -134,6 +134,55 @@
             border-left:3px solid var(--accent);border-radius:0 12px 12px 0;
         }
 
+        /* ━━━━━━━━━━━━━━━━ LỘ TRÌNH 6 KHỐI ━━━━━━━━━━━━━ */
+        .block-menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .block-item {
+            background: var(--bg-card);
+            border: 1px solid var(--border2);
+            border-radius: 16px;
+            padding: 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .block-item:hover {
+            transform: translateY(-4px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(79, 142, 247, 0.15);
+        }
+        .block-icon {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+        }
+        .block-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #fff;
+        }
+        .block-summary {
+            font-size: 0.9rem;
+            color: var(--dim);
+            line-height: 1.5;
+        }
+        .block-count {
+            margin-top: auto;
+            font-size: 0.8rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.05);
+            padding: 4px 10px;
+            border-radius: 20px;
+            width: fit-content;
+        }
+
         .mini-card{
             background:rgba(0,0,0,.3);border:1px solid var(--border);
             border-radius:14px;padding:20px;margin-bottom:16px;
@@ -448,11 +497,16 @@
     <!-- ══════════════ CONCEPT PANEL ══════════════ -->
     <div class="panel active" id="panel-concept">
         <div class="sec-head">
-            <h2>📚 Lý Thuyết Cốt Lõi</h2>
-            <p>Hiểu bản chất cốt lõi của JavaScript, không bao giờ bị bẫy khi phỏng vấn.</p>
+            <h2>📚 Lộ Trình 6 Khối</h2>
+            <p>Học JavaScript có hệ thống từ cơ bản đến thực chiến.</p>
         </div>
-        <div class="topic-nav" id="topic-nav"></div>
-        <div id="concept-content"></div>
+        
+        <div class="block-menu-grid" id="block-menu"></div>
+
+        <div id="block-detail" style="display:none;">
+            <button class="btn btn-ghost" style="margin-bottom: 24px; padding: 10px 24px;" onclick="backToMenu()">🔙 Trở lại Lộ Trình</button>
+            <div id="concept-content"></div>
+        </div>
     </div>
 
     <!-- ══════════════ QUIZ PANEL ══════════════════ -->
@@ -620,14 +674,22 @@
 <!-- API KEY GUIDE MODAL -->
 <div class="community-modal" id="guide-modal" onclick="if(event.target.id === 'guide-modal') this.classList.remove('active')" style="z-index: 250;">
     <div class="community-box" style="max-width: 500px; padding: 30px;">
-        <h3 style="text-align:center; color:var(--primary); margin-bottom: 20px;">🔑 Lấy API Key Miễn Phí</h3>
+        <h3 style="text-align:center; color:var(--primary); margin-bottom: 20px;">🔑 Hướng Dẫn Lấy Mã</h3>
         <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border);">
-            <h4 style="color: #F59E0B; margin-bottom: 8px;">Bước 1:</h4>
-            <p><a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#3B82F6;">👉 Mở Google AI Studio</a></p>
+            <h4 style="color: #F59E0B; margin-bottom: 8px;">Bước 1: Lấy mã API (Miễn phí)</h4>
+            <p><a href="https://aistudio.google.com/app/apikey" target="_blank" style="color:#3B82F6;">👉 Mở Google AI Studio</a>. Đăng nhập bằng Gmail, bấm <strong>"Create API Key"</strong> và Copy đoạn mã <code>AIzaSy...</code></p>
         </div>
         <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border);">
-            <h4 style="color: #F59E0B; margin-bottom: 8px;">Bước 2:</h4>
-            <p>Bấm <strong>"Create API Key"</strong>, copy đoạn mã AIzaSy... và dán vào ô nhập.</p>
+            <h4 style="color: #F59E0B; margin-bottom: 8px;">Bước 2: Dán mã API</h4>
+            <p>Dán mã vừa Copy vào ô <strong>"1. Gemini API Key"</strong>. <i>(Mã sẽ được tự động ghi nhớ cho lần sau)</i>.</p>
+        </div>
+        <div style="background: var(--bg-card); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px solid var(--border);">
+            <h4 style="color: #F59E0B; margin-bottom: 8px;">Bước 3: Nhập từ khóa</h4>
+            <p>Điền tên hàm/khái niệm JS vào ô số 2 rồi bấm <strong>🚀 Đóng Góp</strong>.</p>
+            <p style="margin-top: 10px; font-size: 0.9rem; color: var(--dim);">💡 <em>Click để copy thử:</em> 
+                <span style="display:inline-block; padding: 4px 8px; background: rgba(59, 130, 246, 0.15); border: 1px dashed #3B82F6; border-radius: 6px; cursor: pointer; color: #3B82F6; margin-top: 5px;" onclick="navigator.clipboard.writeText('Array.prototype.reduce'); document.getElementById('comm-keyword').value = 'Array.prototype.reduce'; alert('Đã copy và điền tự động: Array.prototype.reduce');">Array.prototype.reduce</span>
+                <span style="display:inline-block; padding: 4px 8px; background: rgba(59, 130, 246, 0.15); border: 1px dashed #3B82F6; border-radius: 6px; cursor: pointer; color: #3B82F6; margin-top: 5px;" onclick="navigator.clipboard.writeText('Event Loop'); document.getElementById('comm-keyword').value = 'Event Loop'; alert('Đã copy và điền tự động: Event Loop');">Event Loop</span>
+            </p>
         </div>
         <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="document.getElementById('guide-modal').classList.remove('active')">Đã Hiểu</button>
     </div>
@@ -672,49 +734,37 @@ function renderConcepts() {
     CONCEPT_DATA.forEach(t => totalConcepts += (t.concepts || []).length);
     document.getElementById('stat-flash').textContent = totalConcepts;
 
-    // Topic pills
-    const nav = document.getElementById('topic-nav');
+    // Render Block Menu
+    const menu = document.getElementById('block-menu');
+    menu.innerHTML = '';
     CONCEPT_DATA.forEach((t, i) => {
-        const pill = document.createElement('button');
-        pill.className = 'topic-pill' + (i === 0 ? ' active' : '');
-        pill.style.setProperty('--tc', t.color);
-        pill.innerHTML = t.icon + ' ' + t.title;
-        pill.onclick = () => showTopic(i);
-        if (i === 0) pill.style.background = `linear-gradient(135deg,${t.color}33,${t.color}11)`;
-        if (i === 0) pill.style.borderColor = t.color + '60';
-        if (i === 0) pill.style.color = t.color;
-        nav.appendChild(pill);
+        const count = (t.concepts || []).length;
+        const div = document.createElement('div');
+        div.className = 'block-item';
+        div.style.borderColor = t.color + '40';
+        div.innerHTML = `
+            <div class="block-icon">${t.icon}</div>
+            <div class="block-title" style="color: ${t.color}">${t.title}</div>
+            <div class="block-summary">${t.summary}</div>
+            <div class="block-count">${count} khái niệm</div>
+        `;
+        div.onclick = () => showTopic(i);
+        menu.appendChild(div);
     });
-    showTopic(0);
 }
 
 function showTopic(idx) {
     activeTopic = idx;
     const t = CONCEPT_DATA[idx];
-    // Update pills
-    document.querySelectorAll('.topic-pill').forEach((p, i) => {
-        p.classList.toggle('active', i === idx);
-        if (i === idx) {
-            p.style.background = `linear-gradient(135deg,${CONCEPT_DATA[i].color}33,${CONCEPT_DATA[i].color}11)`;
-            p.style.borderColor = CONCEPT_DATA[i].color + '70';
-            p.style.color = CONCEPT_DATA[i].color;
-        } else {
-            p.style.background = '';
-            p.style.borderColor = '';
-            p.style.color = '';
-        }
-    });
-    // Render concept card
+    
+    document.getElementById('block-menu').style.display = 'none';
+    document.getElementById('block-detail').style.display = 'block';
+    document.querySelector('#panel-concept .sec-head h2').textContent = t.title;
+    document.querySelector('#panel-concept .sec-head p').textContent = t.summary;
+
     const cc = document.getElementById('concept-content');
     cc.innerHTML = `
         <div class="concept-card" style="border-color:${t.color}30">
-            <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid var(--border)">
-                <span style="font-size:2.4rem">${t.icon}</span>
-                <div>
-                    <h3 style="font-family:'Outfit',sans-serif;font-size:1.5rem;font-weight:800;color:#fff">${t.title}</h3>
-                </div>
-            </div>
-            <div class="concept-summary">${t.summary}</div>
             ${(t.concepts || []).map(c => `
                 <div class="mini-card">
                     <div class="mini-term">${esc(c.term)}</div>
@@ -722,7 +772,16 @@ function showTopic(idx) {
                     <div class="mini-explain">${c.explain}</div>
                 </div>
             `).join('')}
+            ${(t.concepts || []).length === 0 ? '<div style="color:var(--dim); text-align:center; padding: 40px; background: var(--bg-card); border-radius: 12px; border: 1px dashed var(--border);">Chưa có dữ liệu cho phần này. Xin hãy đóng góp!</div>' : ''}
         </div>`;
+    window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function backToMenu() {
+    document.getElementById('block-detail').style.display = 'none';
+    document.getElementById('block-menu').style.display = 'grid';
+    document.querySelector('#panel-concept .sec-head h2').textContent = '📚 Lộ Trình 6 Khối';
+    document.querySelector('#panel-concept .sec-head p').textContent = 'Học JavaScript có hệ thống từ cơ bản đến thực chiến.';
 }
 
 // ━━━━━━━━━━━━━━━━━━━━ QUIZ ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1269,5 +1328,11 @@ if (document.readyState === 'loading') {
     init();
 }
 </script>
+<!-- FLOATING SCROLL BUTTONS -->
+<div class="scroll-btns" style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 100;">
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="width: 45px; height: 45px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='#2563EB'" onmouseout="this.style.background='var(--primary)'">↑</button>
+    <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" style="width: 45px; height: 45px; border-radius: 50%; border: none; background: var(--accent); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='#10B981'" onmouseout="this.style.background='var(--accent)'">↓</button>
+</div>
+
 </body>
 </html>
