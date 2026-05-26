@@ -1,0 +1,39 @@
+name: Sync Community Data from Issues
+
+on:
+  issues:
+    types: [opened, edited, closed, deleted, reopened]
+  workflow_dispatch: # Cho phép bấm chạy thủ công trên web
+
+jobs:
+  sync_data:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      issues: read
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Install Dependencies
+        run: pip install requests
+
+      - name: Run Sync Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: python scripts/sync_community_data.py
+
+      - name: Commit and Push Changes
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+          git add js_community.js
+          # Chỉ commit nếu có thay đổi
+          git diff --quiet && git diff --staged --quiet || (git commit -m "auto: Sync community data from Github Issues" && git push)
