@@ -26,6 +26,25 @@ ${JSON.stringify(payload.data, null, 2)}
 \`\`\`
 `;
 
+        // Đọc cấu hình Auto-Approve từ Github (Main branch)
+        let isAutoApprove = false;
+        try {
+            const configRes = await fetch(`https://raw.githubusercontent.com/${GITHUB_REPO}/main/admin_settings.json`, {
+                headers: { 'Authorization': `token ${GITHUB_PAT}` }
+            });
+            if (configRes.ok) {
+                const configData = await configRes.json();
+                isAutoApprove = configData.auto_approve === true;
+            }
+        } catch (e) {
+            console.error("Lỗi đọc admin_settings:", e);
+        }
+
+        const labels = ["community-contribution"];
+        if (isAutoApprove) {
+            labels.push("approved");
+        }
+
         // Gọi GitHub API tạo Issue
         const ghResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/issues`, {
             method: 'POST',
@@ -38,7 +57,7 @@ ${JSON.stringify(payload.data, null, 2)}
             body: JSON.stringify({
                 title: issueTitle,
                 body: issueBody,
-                labels: ["community-contribution"]
+                labels: labels
             })
         });
 

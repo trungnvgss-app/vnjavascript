@@ -1357,6 +1357,22 @@ if (document.readyState === 'loading') {
 
         <!-- Dashboard Section -->
         <div id="admin-dashboard-section" style="display: none; flex: 1; overflow: hidden; flex-direction: column;">
+            <style>
+                .switch input:checked + .slider { background-color: var(--correct); }
+                .switch input:checked + .slider:before { transform: translateX(22px); }
+                .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+            </style>
+            <div style="background: var(--surface); border: 1px solid var(--border); padding: 15px; border-radius: 12px; margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3 style="color: var(--text); margin-bottom: 5px;">⚙️ Tự động duyệt bài</h3>
+                    <p style="color: var(--dim); font-size: 0.9rem;">Nếu bật, các bài đóng góp sẽ lên web ngay lập tức bỏ qua bước chờ duyệt.</p>
+                </div>
+                <label class="switch" style="position: relative; display: inline-block; width: 50px; height: 28px;">
+                    <input type="checkbox" id="auto-approve-toggle" onchange="toggleAutoApprove(this)" style="opacity: 0; width: 0; height: 0;">
+                    <span class="slider" style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #cbd5e1; transition: .4s; border-radius: 34px;"></span>
+                </label>
+            </div>
+
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
                 <h3 style="color: var(--accent);">Bài đang chờ duyệt (<span id="admin-pending-count">0</span>)</h3>
                 <button onclick="loadAdminIssues()" style="background: none; border: 1px solid var(--border); color: var(--text); padding: 5px 10px; border-radius: 6px; cursor: pointer;">🔄 Làm mới</button>
@@ -1370,6 +1386,7 @@ if (document.readyState === 'loading') {
 
 <script>
 let adminToken = localStorage.getItem('mio_admin_token') || null;
+let settingsSha = null;
 
 function openWebAdmin() {
     document.getElementById('web-admin-modal').classList.add('active');
@@ -1420,10 +1437,48 @@ async function loginAdmin() {
     }
 }
 
+async function toggleAutoApprove(checkbox) {
+    const isChecked = checkbox.checked;
+    checkbox.disabled = true;
+    try {
+        const res = await fetch('/api/admin_settings', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ token: adminToken, autoApprove: isChecked, sha: settingsSha })
+        });
+        const data = await res.json();
+        if(!res.ok) throw new Error(data.error || "Lỗi lưu cài đặt");
+        
+        // Reload settings to get new SHA
+        const setRes = await fetch('/api/admin_settings');
+        if(setRes.ok) {
+            const sd = await setRes.json();
+            settingsSha = sd.sha;
+        }
+    } catch(e) {
+        alert("Lỗi: " + e.message);
+        checkbox.checked = !isChecked; // revert
+    } finally {
+        checkbox.disabled = false;
+    }
+}
+
 async function loadAdminIssues() {
     const list = document.getElementById('admin-issues-list');
     list.innerHTML = '<p style="color: var(--dim); text-align: center; padding: 20px;">Đang tải dữ liệu...</p>';
     
+    // Tải cài đặt admin
+    try {
+        const setRes = await fetch('/api/admin_settings');
+        if(setRes.ok) {
+            const sd = await setRes.json();
+            document.getElementById('auto-approve-toggle').checked = sd.settings.auto_approve;
+            settingsSha = sd.sha;
+        }
+    } catch(e) {
+        console.error("Không tải được settings");
+    }
+
     try {
         const res = await fetch('/api/admin_get_issues', {
             method: 'POST',
