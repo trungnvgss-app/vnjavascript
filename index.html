@@ -1213,6 +1213,7 @@ TRẢ VỀ DUY NHẤT ĐỊNH DẠNG JSON (Không chứa markdown, không lời 
   "is_valid_js": true (chỉ true nếu đúng là hàm/khái niệm của JavaScript, nếu sai trả false),
   "reason": "Lý do nếu false, hoặc trống nếu true",
   "concept_data": {
+    "block_id": "CHỈ CHỌN 1 TRONG CÁC ID SAU: 'basic', 'data-structures', 'dom', 'advanced', 'async', 'ecosystem'",
     "term": "Tên hàm chuẩn xác",
     "code": "Ví dụ 2-3 dòng",
     "short_explain": "1-2 câu tóm tắt chuyên sâu",
@@ -1295,13 +1296,14 @@ function init() {
     // Merge Community Data from js_community.js
     if (typeof COMMUNITY_CONCEPTS !== 'undefined' && typeof COMMUNITY_QUIZZES !== 'undefined') {
         if(COMMUNITY_CONCEPTS.length > 0) {
-            CONCEPT_DATA.push({
-                id: "community",
-                title: "🌟 Đóng Góp Cộng Đồng",
-                icon: "🌟",
-                color: "#F59E0B",
-                summary: "Những kiến thức tuyệt vời do cộng đồng tự nạp bằng API của riêng họ.",
-                concepts: COMMUNITY_CONCEPTS
+            COMMUNITY_CONCEPTS.forEach(c => {
+                let targetBlock = CONCEPT_DATA.find(b => b.id === c.block_id);
+                if (!targetBlock) {
+                    targetBlock = CONCEPT_DATA.find(b => b.id === 'ecosystem'); // Mặc định vào khối Công cụ nếu AI phân loại sai
+                }
+                if (targetBlock) {
+                    targetBlock.concepts.push(c);
+                }
             });
         }
         if(COMMUNITY_QUIZZES.length > 0) {
