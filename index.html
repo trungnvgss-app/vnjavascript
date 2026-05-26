@@ -415,47 +415,117 @@
         .search-title { font-weight: bold; color: var(--accent); margin-bottom: 6px; }
         .search-snippet { font-size: 0.85rem; color: var(--dim); }
 
-        /* ── Community Contribution ────────────────────────────── */
+        /* ── Community & Admin Modals ────────────────────────────── */
         #community-btn {
-            position: fixed; left: 24px; bottom: 84px; z-index: 98; /* Ở trên nút Admin nếu có */
+            position: fixed; left: 24px; bottom: 90px; z-index: 98; /* Ở trên nút Admin nếu có */
             padding: 12px 20px; border-radius: 100px;
             background: rgba(255,255,255,0.1); border: 1px solid var(--border);
             color: var(--text); font-weight: 600; font-family: 'Outfit', sans-serif;
             backdrop-filter: blur(5px); cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
         }
-        #community-btn:hover { background: rgba(255,255,255,0.2); border-color: var(--primary); }
-        .community-modal {
+        #community-btn:hover { background: rgba(255,255,255,0.2); border-color: var(--primary); transform: translateY(-2px); }
+        
+        .community-modal, .admin-modal, .web-admin-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 200;
             align-items: center; justify-content: center; overflow-y: auto; padding: 20px;
         }
-        .community-modal.active { display: flex; }
-        .community-box {
+        .community-modal.active, .admin-modal.active, .web-admin-modal.active { display: flex; }
+        
+        .community-box, .admin-box, .web-admin-box {
             background: var(--bg-card); width: 100%; max-width: 600px; max-height: 90vh; overflow-y: auto;
             border-radius: 24px; border: 1px solid var(--border2); padding: 40px;
             text-align: left; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            position: relative;
+            animation: bounceIn .5s cubic-bezier(.175,.885,.32,1.275);
         }
-        .community-box h3 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 12px; text-align: center; }
-        .community-box p.subtitle { color: var(--dim); font-size: 0.95rem; margin-bottom: 24px; text-align: center; }
+        
+        .web-admin-box {
+            max-width: 800px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .community-box h3, .admin-box h3, .web-admin-box h2 { font-family: 'Outfit', sans-serif; font-size: 1.6rem; color: var(--primary); margin-bottom: 12px; text-align: center; }
+        .community-box p.subtitle, .admin-box p, .web-admin-box p { color: var(--dim); font-size: 0.95rem; margin-bottom: 24px; text-align: center; }
         .community-box label { display: block; font-weight: bold; margin-bottom: 8px; color: var(--accent); }
-        .community-box input {
+        
+        .community-box input, .admin-box input, .web-admin-box input {
             width: 100%; padding: 14px 18px; font-size: 1rem;
             background: rgba(0,0,0,0.3); border: 1px solid var(--border); color: #fff;
             border-radius: 12px; margin-bottom: 20px; outline: none; transition: border-color 0.2s;
         }
-        .community-box input:focus { border-color: var(--primary); }
+        .community-box input:focus, .admin-box input:focus, .web-admin-box input:focus { border-color: var(--primary); }
         .community-box textarea {
             width: 100%; padding: 14px; background: rgba(0,0,0,0.5); border: 1px dashed var(--accent);
             color: var(--correct); font-family: monospace; font-size: 0.9rem; border-radius: 12px;
             height: 120px; resize: none; margin-top: 10px; margin-bottom: 20px; display: none;
         }
-        .c-loading { display: none; text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 20px; }
+        
+        .close-btn {
+            position: absolute; top: 20px; right: 24px; font-size: 2rem; font-weight: 300;
+            color: var(--dim); cursor: pointer; transition: color 0.2s; line-height: 1;
+        }
+        .close-btn:hover { color: var(--text); }
+        
+        .c-loading, .loading-ring { display: none; text-align: center; color: var(--primary); font-weight: bold; margin-bottom: 20px; }
+
+        /* Floating Admin Buttons on Left */
+        #admin-btn {
+            position: fixed; left: 24px; bottom: 150px; z-index: 98;
+            padding: 12px 20px; border-radius: 100px;
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15), rgba(239, 68, 68, 0.15));
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            color: var(--text); font-weight: 600; font-family: 'Outfit', sans-serif;
+            backdrop-filter: blur(5px); cursor: pointer; transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            display: none; /* Controlled by js */
+        }
+        #admin-btn:hover {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.25), rgba(239, 68, 68, 0.25));
+            border-color: var(--primary); transform: translateY(-2px);
+        }
+
+        /* Shield Button - Web Admin Dashboard Trigger */
+        .admin-shield-btn {
+            position: fixed; bottom: 30px; left: 24px; width: 48px; height: 48px;
+            border-radius: 50%; border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.1); color: var(--text); font-size: 1.2rem;
+            cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100;
+            display: flex; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px); transition: all 0.3s;
+        }
+        .admin-shield-btn:hover {
+            background: rgba(255, 255, 255, 0.2); border-color: var(--primary); transform: scale(1.1);
+        }
+
+        /* Floating Scroll Buttons on Right */
+        .scroll-btns {
+            position: fixed; bottom: 30px; right: 24px; display: flex; flex-direction: column; gap: 10px; z-index: 100;
+        }
+        .scroll-btn {
+            width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--border);
+            color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            display: flex; align-items: center; justify-content: center; transition: all 0.3s;
+            backdrop-filter: blur(5px);
+        }
+        .scroll-btn.up { background: rgba(59, 130, 246, 0.2); border-color: rgba(59, 130, 246, 0.4); }
+        .scroll-btn.up:hover { background: var(--primary); border-color: var(--primary); transform: scale(1.1); }
+        .scroll-btn.down { background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.4); }
+        .scroll-btn.down:hover { background: var(--accent); border-color: var(--accent); transform: scale(1.1); }
 
         @media(max-width:600px){
             .tabs{flex-direction:column;border-radius:16px}
             .tab{border-radius:10px;justify-content:center}
             .hstats{gap:20px}
             .fcard-container{height:320px}
+            .community-box, .admin-box, .web-admin-box { padding: 24px 20px; border-radius: 16px; }
+            .scroll-btns { bottom: 20px; right: 15px; }
+            #community-btn, #admin-btn, .admin-shield-btn { left: 15px; }
+            .admin-shield-btn { bottom: 20px; }
+            #community-btn { bottom: 80px; }
+            #admin-btn { bottom: 140px; }
         }
     </style>
 </head>
@@ -638,6 +708,7 @@
 <button id="admin-btn" onclick="openAdmin()">⚡ Nạp Kiến Thức (Admin)</button>
 <div class="admin-modal" id="admin-modal" onclick="closeAdmin(event)">
     <div class="admin-box">
+        <span class="close-btn" onclick="document.getElementById('admin-modal').classList.remove('active')">&times;</span>
         <h3>🤖 Bộ Máy Nhập Liệu</h3>
         <p>Nhập tên hàm/khái niệm JS mới. Hệ thống sẽ dùng API để tự động sinh Lý thuyết & Quiz, và ghi thẳng vào web!</p>
         <input type="text" id="admin-input" placeholder="VD: Array.prototype.reduce, Promise.all...">
@@ -1331,16 +1402,16 @@ if (document.readyState === 'loading') {
 }
 </script>
 <!-- FLOATING SCROLL BUTTONS -->
-<div class="scroll-btns" style="position: fixed; bottom: 30px; right: 30px; display: flex; flex-direction: column; gap: 10px; z-index: 100;">
-    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" style="width: 45px; height: 45px; border-radius: 50%; border: none; background: var(--primary); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='#2563EB'" onmouseout="this.style.background='var(--primary)'">↑</button>
-    <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" style="width: 45px; height: 45px; border-radius: 50%; border: none; background: var(--accent); color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); display: flex; align-items: center; justify-content: center; transition: background 0.2s;" onmouseover="this.style.background='#10B981'" onmouseout="this.style.background='var(--accent)'">↓</button>
+<div class="scroll-btns">
+    <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})" class="scroll-btn up">↑</button>
+    <button onclick="window.scrollTo({top: document.body.scrollHeight, behavior: 'smooth'})" class="scroll-btn down">↓</button>
 </div>
 
 <!-- ADMIN MODERATION PANEL -->
-<button onclick="openWebAdmin()" style="position: fixed; bottom: 30px; left: 30px; width: 45px; height: 45px; border-radius: 50%; border: none; background: #64748b; color: white; font-size: 1.2rem; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 100;" title="Admin Dashboard">🛡️</button>
+<button onclick="openWebAdmin()" class="admin-shield-btn" title="Admin Dashboard">🛡️</button>
 
-<div id="web-admin-modal" class="modal">
-    <div class="modal-content" style="max-width: 800px; max-height: 90vh; display: flex; flex-direction: column;">
+<div id="web-admin-modal" class="web-admin-modal" onclick="if(event.target.id === 'web-admin-modal') closeWebAdmin()">
+    <div class="web-admin-box">
         <span class="close-btn" onclick="closeWebAdmin()">&times;</span>
         <h2 style="margin-bottom: 20px; display: flex; align-items: center; gap: 10px;">
             <span style="font-size: 1.8rem">🛡️</span> Admin Dashboard
