@@ -381,7 +381,7 @@
 
         /* ── Search ────────────────────────────────────── */
         .search-fab {
-            position: fixed; right: 28px; bottom: 28px; z-index: 99;
+            position: fixed; right: 28px; top: 28px; z-index: 99;
             width: 60px; height: 60px; border-radius: 50%;
             background: linear-gradient(135deg, var(--primary), var(--accent));
             color: #fff; font-size: 1.6rem; border: none;
@@ -1330,14 +1330,14 @@ TRẢ VỀ DUY NHẤT ĐỊNH DẠNG JSON (Không chứa markdown, không lời 
         // BƯỚC 2: Gửi JSON lên Vercel API để tạo Github Issue
         msg.textContent = "2/2: Đang gửi bài đóng góp lên máy chủ Github...";
         
-        const netlifyRes = await fetch('/api/submit_contribution', {
+        const apiRes = await fetch('/api/submit_contribution', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ keyword: keyword, data: result })
         });
         
-        if (!netlifyRes.ok) {
-            const errData = await netlifyRes.json();
+        if (!apiRes.ok) {
+            const errData = await apiRes.json();
             throw new Error(errData.error || "Lỗi tạo Github Issue");
         }
         
@@ -1378,7 +1378,7 @@ function init() {
             });
         }
         if(COMMUNITY_QUIZZES.length > 0) {
-            QUIZ_DATA = QUIZ_DATA.concat(COMMUNITY_QUIZZES);
+            QUIZ_DATA.push(...COMMUNITY_QUIZZES);
         }
     }
     

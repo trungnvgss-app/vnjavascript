@@ -29,7 +29,9 @@ export default async function handler(req, res) {
         // Xử lý request POST: Cập nhật file trên Github (yêu cầu Token Admin)
         if (req.method === 'POST') {
             const { token, autoApprove, sha } = req.body;
-            if (token !== 'mio-admin-token-gss') {
+            
+            const envToken = process.env.ADMIN_TOKEN_SECRET;
+            if (!envToken || token !== envToken) {
                 return res.status(401).json({ error: 'Unauthorized' });
             }
 
