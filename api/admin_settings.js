@@ -22,7 +22,8 @@ export default async function handler(req, res) {
             const data = await response.json();
             // content được mã hóa base64
             const contentDecoded = Buffer.from(data.content, 'base64').toString('utf8');
-            const settings = JSON.parse(contentDecoded);
+            const cleanContent = contentDecoded.replace(/^\uFEFF/, '');
+            const settings = JSON.parse(cleanContent);
             return res.status(200).json({ settings, sha: data.sha });
         }
 
